@@ -1,0 +1,15 @@
+{
+  "source": "Yahoo Finance",
+  "ticker": "SPY",
+  "start": "2015-01-01",
+  "end": "2024-12-31",
+  "rows": 2516,
+  "retrieved_at": "2026-10-31T11:06:55.774160+00:00",
+  "sha256": "47cb5108d458cd86e436a25c9667b055c42bb545433a7dfecf61aafec4ff3c2f",
+  "price_convention": "Raw OHLCV and Yahoo Adj Close; return features use Adj Close",
+  "actual_start": "2015-01-02",
+  "actual_end": "2024-12-31",
+  "expected_sessions": 2516,
+  "missing_sessions": 0,
+  "calendar": "NYSE"
+}

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-31",
+  "scope": "ENSI academic personal project; corporate projects excluded",
+  "pytest": {
+    "passed": 29,
+    "failed": 0,
+    "warning": "Upstream Starlette TestClient deprecation for httpx; tests succeed."
+  },
+  "ui": {
+    "streamlit_pages_executed": 3,
+    "exceptions": 0
+  },
+  "notebook": "all code cells executed",
+  "editable_install": "passed",
+  "cli_help": "passed",
+  "ruff": "passed",
+  "yaml": "parsed",
+  "cloud_deployment": "deferred, not executed",
+  "docker_build": "not executed; Docker unavailable",
+  "github_publication": "left to user",
+  "mlflow_local_file_tracking": "smoke passed"
+}

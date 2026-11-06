@@ -1,0 +1,30 @@
+{
+  "source": "Yahoo Finance",
+  "start": "2015-01-01",
+  "end": "2024-12-31",
+  "tickers": {
+    "volatility": "SPY",
+    "regimes": "^IXIC"
+  },
+  "horizon_sessions": 5,
+  "lookback_sessions": 20,
+  "ddof": 1,
+  "annualization": 252,
+  "split": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "purge_future_labels": true,
+  "hidden_units": 16,
+  "epochs_reference_run": 15,
+  "seeds": [
+    42,
+    7,
+    123
+  ],
+  "learning_rate": 0.003,
+  "batch_size": 64,
+  "selection": "minimum validation RMSE; no test tuning",
+  "regime_clusters": 3
+}

@@ -1,0 +1,31 @@
+services:
+  api:
+    build: .
+    ports: ["127.0.0.1:8000:8000"]
+    environment:
+      API_TOKEN: ${API_TOKEN:?Set a random API_TOKEN}
+      ARTIFACT_DIR: /app/artifacts/spy
+    volumes:
+      - ./artifacts:/app/artifacts:ro
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+  dashboard:
+    build: .
+    command: ["python", "-m", "streamlit", "run", "src/market_risk/dashboard.py", "--server.address=0.0.0.0", "--server.headless=true"]
+    ports: ["127.0.0.1:8501:8501"]
+    environment:
+      API_TOKEN: ${API_TOKEN:?Set a random API_TOKEN}
+    volumes:
+      - ./artifacts:/app/artifacts:ro
+      - ./data:/app/data:ro
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]

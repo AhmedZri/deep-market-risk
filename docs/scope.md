@@ -1,0 +1,1 @@
+Academic ENSI personal project. No Colombus Capital integration, branding, operational data or deployment. User publishes repositories independently. All cloud deployment is deferred; no paid services provisioned.

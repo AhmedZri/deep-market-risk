@@ -1,0 +1,64 @@
+{
+  "frozen_test_start": "2023-07-06 00:00:00",
+  "seed": 42,
+  "folds": [
+    {
+      "last_train_target": "2017-03-28 00:00:00",
+      "validation_start": "2017-03-29 00:00:00",
+      "last_validation_target": "2019-05-06 00:00:00",
+      "metrics": {
+        "lstm": {
+          "rmse": 0.06660832464694977,
+          "mae": 0.04587891325354576
+        },
+        "cnn": {
+          "rmse": 0.08060061931610107,
+          "mae": 0.0545157752931118
+        },
+        "historical20": {
+          "rmse": 0.07573823165149766,
+          "mae": 0.053942136872801055
+        }
+      }
+    },
+    {
+      "last_train_target": "2019-04-29 00:00:00",
+      "validation_start": "2019-04-30 00:00:00",
+      "last_validation_target": "2021-06-03 00:00:00",
+      "metrics": {
+        "lstm": {
+          "rmse": 0.17430037260055542,
+          "mae": 0.08529121428728104
+        },
+        "cnn": {
+          "rmse": 0.20628133416175842,
+          "mae": 0.1112823337316513
+        },
+        "historical20": {
+          "rmse": 0.1547569445360071,
+          "mae": 0.09417596519288057
+        }
+      }
+    },
+    {
+      "last_train_target": "2021-05-26 00:00:00",
+      "validation_start": "2021-05-27 00:00:00",
+      "last_validation_target": "2023-07-05 00:00:00",
+      "metrics": {
+        "lstm": {
+          "rmse": 0.0680781900882721,
+          "mae": 0.052398432046175
+        },
+        "cnn": {
+          "rmse": 0.08780471235513687,
+          "mae": 0.06841320544481277
+        },
+        "historical20": {
+          "rmse": 0.07765313743200351,
+          "mae": 0.059398895095332575
+        }
+      }
+    }
+  ],
+  "scope": "Expanding validation diagnostics with early stopping; not an independent final test."
+}

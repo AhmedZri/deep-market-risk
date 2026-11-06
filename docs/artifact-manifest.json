@@ -1,0 +1,46 @@
+{
+  "artifacts/nasdaq/regime_metrics.json": {
+    "sha256": "776dcf9d062f161797f1485468b4c78454466a22a8ecdc519f69f394fa182730",
+    "bytes": 2694
+  },
+  "artifacts/nasdaq/regime_preprocessing.joblib": {
+    "sha256": "46bc9065d8dbd46e8285eb9d4885ea12bb88e7e19d95ea6ce0afd272056a075a",
+    "bytes": 8245
+  },
+  "artifacts/nasdaq/regimes.csv": {
+    "sha256": "94395d5eeab93e2c2fac21e06efe7d76dd238a4787a49d81acc4531dfd993783",
+    "bytes": 32160
+  },
+  "artifacts/nasdaq/REGIMES_TEST_EVALUATED.json": {
+    "sha256": "b8712df058b9dd8306042c210f6b9d1537295ea36d4f1fef2e4cff083ff36889",
+    "bytes": 136
+  },
+  "artifacts/nasdaq/regimes.pt": {
+    "sha256": "ef5c9c5012cb3fd7e84525000cecaf8d0209bde78aead17438cb959dc72eee60",
+    "bytes": 13433
+  },
+  "artifacts/spy/volatility_metrics.json": {
+    "sha256": "9f489462c297ec4c06c073461de7cd71877c8131fb1e90e4076f98c848094684",
+    "bytes": 11787
+  },
+  "artifacts/spy/volatility_predictions.csv": {
+    "sha256": "a86a5e8c5e79681aa24d165bb2e6de877b357677ce15b41bd8eb81af89bb619f",
+    "bytes": 45889
+  },
+  "artifacts/spy/volatility.pt": {
+    "sha256": "c69aacfcecc2c03a90c2e46bac4d7594fe69920e0748ddeedc7b3c2e9e9e11ea",
+    "bytes": 10233
+  },
+  "artifacts/spy/TEST_EVALUATED.json": {
+    "sha256": "a7706b42a45d1e2b7da53d6ec17acb692837c767e40093b4d75b9f777d325692",
+    "bytes": 99
+  },
+  "artifacts/eda/eda.html": {
+    "sha256": "f0b8836d3dec9b0d9fbd89c0d58383d02a947d66512a6fe007808eecd8f779d7",
+    "bytes": 5621544
+  },
+  "artifacts/eda/walk_forward.json": {
+    "sha256": "c0806ad8782ad9280bd0144111675354ea995eb63322af841a6f40b0002f5492",
+    "bytes": 1719
+  }
+}

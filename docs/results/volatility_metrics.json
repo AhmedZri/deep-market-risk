@@ -1,0 +1,511 @@
+{
+  "source": "Yahoo Finance",
+  "horizon": 5,
+  "lookback": 20,
+  "features": [
+    "return",
+    "vol5",
+    "vol10",
+    "vol20",
+    "momentum",
+    "range",
+    "drawdown",
+    "volume_change"
+  ],
+  "protocol": "70/15/15 chronological; future labels purged; train-only scaler",
+  "dataset_sha256": "c00bbd692bb961a867d1f452eb2d0f5a7b964195fdc2b1bfba8efac41d3f2b0a",
+  "validation": {
+    "historical5": {
+      "rmse": 0.10027074708359943,
+      "mae": 0.07380929341828399
+    },
+    "historical10": {
+      "rmse": 0.08546514006800635,
+      "mae": 0.06360215810254283
+    },
+    "historical20": {
+      "rmse": 0.08242582289165354,
+      "mae": 0.06270612374691299
+    },
+    "ewma": {
+      "rmse": 0.07943753524137319,
+      "mae": 0.06168819667708693
+    },
+    "lstm": {
+      "rmse": 0.07408232986927032,
+      "mae": 0.056439030915498734,
+      "seed_rmse_std": 0.0014001652819804747
+    },
+    "cnn": {
+      "rmse": 0.08322637528181076,
+      "mae": 0.0660429298877716,
+      "seed_rmse_std": 0.007310122635314146
+    }
+  },
+  "splits": {
+    "train": {
+      "n": 1725,
+      "start": "2015-03-02",
+      "end": "2022-01-03",
+      "last_target": "2022-01-10"
+    },
+    "validation": {
+      "n": 366,
+      "start": "2022-01-11",
+      "end": "2023-06-27",
+      "last_target": "2023-07-05"
+    },
+    "test": {
+      "n": 371,
+      "start": "2023-07-06",
+      "end": "2024-12-23",
+      "last_target": "2024-12-31"
+    }
+  },
+  "experiments": [
+    {
+      "model": "lstm",
+      "seed": 42,
+      "parameters": 1681,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_loss": 0.1710631400346756
+        },
+        {
+          "epoch": 2,
+          "validation_loss": 0.00811766553670168
+        },
+        {
+          "epoch": 3,
+          "validation_loss": 0.008660295978188515
+        },
+        {
+          "epoch": 4,
+          "validation_loss": 0.007913126610219479
+        },
+        {
+          "epoch": 5,
+          "validation_loss": 0.006685675121843815
+        },
+        {
+          "epoch": 6,
+          "validation_loss": 0.006641761399805546
+        },
+        {
+          "epoch": 7,
+          "validation_loss": 0.006234075408428907
+        },
+        {
+          "epoch": 8,
+          "validation_loss": 0.005715264473110437
+        },
+        {
+          "epoch": 9,
+          "validation_loss": 0.006005715578794479
+        },
+        {
+          "epoch": 10,
+          "validation_loss": 0.005654329899698496
+        },
+        {
+          "epoch": 11,
+          "validation_loss": 0.005981935188174248
+        },
+        {
+          "epoch": 12,
+          "validation_loss": 0.005571738816797733
+        },
+        {
+          "epoch": 13,
+          "validation_loss": 0.005488192662596703
+        },
+        {
+          "epoch": 14,
+          "validation_loss": 0.005519979167729616
+        },
+        {
+          "epoch": 15,
+          "validation_loss": 0.005507488269358873
+        }
+      ],
+      "validation": {
+        "rmse": 0.07408232986927032,
+        "mae": 0.056439030915498734,
+        "seed_rmse_std": 0.0014001652819804747
+      }
+    },
+    {
+      "model": "lstm",
+      "seed": 7,
+      "parameters": 1681,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_loss": 0.04432886093854904
+        },
+        {
+          "epoch": 2,
+          "validation_loss": 0.00725396815687418
+        },
+        {
+          "epoch": 3,
+          "validation_loss": 0.013950860127806664
+        },
+        {
+          "epoch": 4,
+          "validation_loss": 0.008403444662690163
+        },
+        {
+          "epoch": 5,
+          "validation_loss": 0.007303702179342508
+        },
+        {
+          "epoch": 6,
+          "validation_loss": 0.007963400334119797
+        },
+        {
+          "epoch": 7,
+          "validation_loss": 0.006659712176769972
+        },
+        {
+          "epoch": 8,
+          "validation_loss": 0.007572648115456104
+        },
+        {
+          "epoch": 9,
+          "validation_loss": 0.00612409645691514
+        },
+        {
+          "epoch": 10,
+          "validation_loss": 0.0060656871646642685
+        },
+        {
+          "epoch": 11,
+          "validation_loss": 0.007044986356049776
+        },
+        {
+          "epoch": 12,
+          "validation_loss": 0.006006950046867132
+        },
+        {
+          "epoch": 13,
+          "validation_loss": 0.006646307650953531
+        },
+        {
+          "epoch": 14,
+          "validation_loss": 0.006150532513856888
+        },
+        {
+          "epoch": 15,
+          "validation_loss": 0.006087729707360268
+        }
+      ],
+      "validation": {
+        "rmse": 0.07750451564788818,
+        "mae": 0.05906983092427254
+      }
+    },
+    {
+      "model": "lstm",
+      "seed": 123,
+      "parameters": 1681,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_loss": 0.03446199744939804
+        },
+        {
+          "epoch": 2,
+          "validation_loss": 0.0072186971083283424
+        },
+        {
+          "epoch": 3,
+          "validation_loss": 0.007024095393717289
+        },
+        {
+          "epoch": 4,
+          "validation_loss": 0.0064272754825651646
+        },
+        {
+          "epoch": 5,
+          "validation_loss": 0.0063704755157232285
+        },
+        {
+          "epoch": 6,
+          "validation_loss": 0.006522024981677532
+        },
+        {
+          "epoch": 7,
+          "validation_loss": 0.006452035158872604
+        },
+        {
+          "epoch": 8,
+          "validation_loss": 0.006337363738566637
+        },
+        {
+          "epoch": 9,
+          "validation_loss": 0.006357395555824041
+        },
+        {
+          "epoch": 10,
+          "validation_loss": 0.006134128198027611
+        },
+        {
+          "epoch": 11,
+          "validation_loss": 0.00598513800650835
+        },
+        {
+          "epoch": 12,
+          "validation_loss": 0.006023559253662825
+        },
+        {
+          "epoch": 13,
+          "validation_loss": 0.005904357880353928
+        },
+        {
+          "epoch": 14,
+          "validation_loss": 0.005926656536757946
+        },
+        {
+          "epoch": 15,
+          "validation_loss": 0.005774450954049826
+        }
+      ],
+      "validation": {
+        "rmse": 0.07598980516195297,
+        "mae": 0.05721266195178032
+      }
+    },
+    {
+      "model": "cnn",
+      "seed": 42,
+      "parameters": 1201,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_loss": 0.01121142040938139
+        },
+        {
+          "epoch": 2,
+          "validation_loss": 0.0075714681297540665
+        },
+        {
+          "epoch": 3,
+          "validation_loss": 0.00754055380821228
+        },
+        {
+          "epoch": 4,
+          "validation_loss": 0.006926629226654768
+        },
+        {
+          "epoch": 5,
+          "validation_loss": 0.008611277677118778
+        },
+        {
+          "epoch": 6,
+          "validation_loss": 0.008658381178975105
+        },
+        {
+          "epoch": 7,
+          "validation_loss": 0.009726460091769695
+        },
+        {
+          "epoch": 8,
+          "validation_loss": 0.009916391223669052
+        },
+        {
+          "epoch": 9,
+          "validation_loss": 0.009712833911180496
+        },
+        {
+          "epoch": 10,
+          "validation_loss": 0.010104378685355186
+        },
+        {
+          "epoch": 11,
+          "validation_loss": 0.012800836935639381
+        }
+      ],
+      "validation": {
+        "rmse": 0.08322637528181076,
+        "mae": 0.0660429298877716,
+        "seed_rmse_std": 0.007310122635314146
+      }
+    },
+    {
+      "model": "cnn",
+      "seed": 7,
+      "parameters": 1201,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_loss": 0.023741664364933968
+        },
+        {
+          "epoch": 2,
+          "validation_loss": 0.026238488033413887
+        },
+        {
+          "epoch": 3,
+          "validation_loss": 0.013958069495856762
+        },
+        {
+          "epoch": 4,
+          "validation_loss": 0.01086695771664381
+        },
+        {
+          "epoch": 5,
+          "validation_loss": 0.010331281460821629
+        },
+        {
+          "epoch": 6,
+          "validation_loss": 0.009460559114813805
+        },
+        {
+          "epoch": 7,
+          "validation_loss": 0.017062557861208916
+        },
+        {
+          "epoch": 8,
+          "validation_loss": 0.015412206761538982
+        },
+        {
+          "epoch": 9,
+          "validation_loss": 0.01522077713161707
+        },
+        {
+          "epoch": 10,
+          "validation_loss": 0.01642334833741188
+        },
+        {
+          "epoch": 11,
+          "validation_loss": 0.015790164470672607
+        },
+        {
+          "epoch": 12,
+          "validation_loss": 0.017637744545936584
+        },
+        {
+          "epoch": 13,
+          "validation_loss": 0.016989970579743385
+        }
+      ],
+      "validation": {
+        "rmse": 0.09726539999246597,
+        "mae": 0.07604309171438217
+      }
+    },
+    {
+      "model": "cnn",
+      "seed": 123,
+      "parameters": 1201,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_loss": 0.02247876487672329
+        },
+        {
+          "epoch": 2,
+          "validation_loss": 0.016518546268343925
+        },
+        {
+          "epoch": 3,
+          "validation_loss": 0.010445506311953068
+        },
+        {
+          "epoch": 4,
+          "validation_loss": 0.009974290616810322
+        },
+        {
+          "epoch": 5,
+          "validation_loss": 0.010931804776191711
+        },
+        {
+          "epoch": 6,
+          "validation_loss": 0.012152902781963348
+        },
+        {
+          "epoch": 7,
+          "validation_loss": 0.01412698719650507
+        },
+        {
+          "epoch": 8,
+          "validation_loss": 0.016163909807801247
+        },
+        {
+          "epoch": 9,
+          "validation_loss": 0.015779705718159676
+        },
+        {
+          "epoch": 10,
+          "validation_loss": 0.01703685149550438
+        },
+        {
+          "epoch": 11,
+          "validation_loss": 0.017896054312586784
+        }
+      ],
+      "validation": {
+        "rmse": 0.09987136721611023,
+        "mae": 0.07774880528450012
+      }
+    }
+  ],
+  "walk_forward": [
+    {
+      "start": "2020-02-10 00:00:00",
+      "end": "2020-03-23 00:00:00",
+      "historical20": {
+        "rmse": 0.441403101915392,
+        "mae": 0.3271228342898013
+      }
+    },
+    {
+      "start": "2021-09-29 00:00:00",
+      "end": "2021-11-09 00:00:00",
+      "historical20": {
+        "rmse": 0.06274389178337003,
+        "mae": 0.05269962017560881
+      }
+    },
+    {
+      "start": "2023-05-22 00:00:00",
+      "end": "2023-07-05 00:00:00",
+      "historical20": {
+        "rmse": 0.027646316018731472,
+        "mae": 0.019746287382114616
+      }
+    }
+  ],
+  "selected_model": "lstm",
+  "test": {
+    "selected_model": "lstm",
+    "rmse": 0.04939023032784462,
+    "mae": 0.03745964542031288,
+    "baselines": {
+      "historical5": {
+        "rmse": 0.06137093234463475,
+        "mae": 0.046997464079737254
+      },
+      "historical10": {
+        "rmse": 0.05716609033543392,
+        "mae": 0.04393891190264168
+      },
+      "historical20": {
+        "rmse": 0.056554576293463575,
+        "mae": 0.0432821014425567
+      },
+      "ewma": {
+        "rmse": 0.05356685314593103,
+        "mae": 0.04210969361862346
+      }
+    }
+  },
+  "validation_absolute_error_q90": 0.12075686454772949,
+  "limitations": [
+    "Adjusted prices are a retrospective Yahoo snapshot, not point-in-time corporate-action vintages.",
+    "Error quantile is descriptive validation uncertainty, not a coverage guarantee.",
+    "Synthetic results do not validate Yahoo or financial forecasting."
+  ]
+}

@@ -1,0 +1,396 @@
+CAHIER DES CHARGES  /  PROJET C
+Projet C  •  Cadrage version 1.1  |  Page 1
+DOSSIER DE CONCEPTION  /  ENSI / TIMESERIES / DEEP LEARNING
+Deep Financial Market Risk Intelligence Engine
+Cahier des charges scientifique — volatilité financière et régimes de marché — édition révisée avec critères 
+Data & Deployment
+ENVIRONNEMENT  Entraînement local Python/PyTorch ; démonstration conteneurisée optionnelle
+FINALITÉ  Prévoir la volatilité SPY et analyser séparément les régimes NASDAQ
+DATE  25 octobre 2026  |  RÉVISION KPI  v1.1
+STATUT  Cadrage d’extension : respecter d’abord le sujet effectivement attribué
+CADRE DE DONNÉES  Yahoo Finance, données journalières 01/01/2015–31/12/2024
+Décision structurante
+Le sujet 3 de l’examen Timeseries impose SPY avec modèles LSTM et CNN 1D ; le sujet 4 impose le NASDAQ 
+Composite avec autoencodeur + clustering et LSTM. L’énoncé prévoit un « sujet attribué ». Le cahier des 
+charges permet une suite de recherche modulaire, mais n’attribue pas automatiquement deux sujets 
+académiques au même étudiant. Le module non attribué reste une extension à autoriser ou à présenter comme 
+personnelle.
+Résumé exécutif
+Les séries financières présentent forte variabilité, asymétries, regroupements de volatilité et changements de 
+conditions. Les modèles complexes semblent attractifs, mais un historique quotidien 2015–2024 reste 
+relativement court. Le projet compare des architectures Deep Learning imposées à des baselines simples, dans 
+un protocole temporel strict, puis fournit une restitution du risque et des régimes estimés, sans promettre une 
+prédiction exploitable du marché ni une stratégie rentable.
+1. Identification détaillée du problème
+Problème 1 — Risque non constant — La dispersion des rendements varie dans le temps. Les niveaux de 
+risque calculés sur une fenêtre historique ne correspondent pas nécessairement à ceux des prochaines 
+séances.
+Problème 2 — Dépendances temporelles — Les rendements et la volatilité présentent des structures 
+séquentielles ; il faut vérifier si LSTM et CNN temporel apportent un gain par rapport à une persistance ou une 
+moyenne glissante.
+Problème 3 — Fuite temporelle — Les fenêtres chevauchantes, cibles futures et normalisations calculées 
+après coup peuvent incorporer de l’information postérieure à la date de décision. Une RMSE spectaculaire peut 
+être artificielle.
+Problème 4 — Régimes non observables — Les régimes « haussier / baissier / latéral » n’ont pas de vérité 
+terrain universelle. Un autoencodeur + clustering produit des états statistiques ; un LSTM peut seulement 
+apprendre des étiquettes définies et documentées, pas une vérité économique indépendante.
+Problème 5 — Overfitting — Un ensemble de modèles, d’hyperparamètres et de figures sélectionné sur 10 ans 
+d’observations peut surajuster l’historique. Le test final doit rester une seule fois ouvert pour l’évaluation.
+Problème 6 — Utilité métier — Le bon output n’est pas « le prix demain », mais une estimation de risque 
+accompagnée d’erreurs historiques, d’incertitude, de stabilité et de limites. Aucune décision de trading 
+automatique n’est prévue.
+Question centrale
+Dans quelles conditions LSTM/CNN 1D parviennent-ils à prévoir une mesure définie de volatilité réalisée future 
+sur SPY mieux que des benchmarks causaux, et quelles structures non supervisées peuvent être décrites de 
+façon reproductible comme régimes statistiques du NASDAQ ?
+
+CAHIER DES CHARGES  /  PROJET C
+Projet C  •  Cadrage version 1.1  |  Page 2
+2. Cadre exact des sources universitaires
+Énoncé
+Contraintes non négociables
+Commun
+Yahoo Finance uniquement ; 2015-01-01 à 2024-12-31 ; fréquence journalière ; Open, High, Low, 
+Close, Adj Close, Volume.
+Commun
+Split temporel strict : 70 % train / 15 % validation / 15 % test, sans mélange aléatoire.
+Sujet 3 — Volatilité
+Ticker SPY ; cible volatilité réalisée glissante des rendements ; comparaison LSTM vs CNN 1D 
+temporel ; RMSE et MAE.
+Sujet 4 — Régimes
+Ticker ^IXIC ; tendances, volatilité, drawdown ; autoencodeur + clustering versus LSTM 
+supervisé ; interprétation/stabilité.
+Option intégration
+Dashboard de risque associant deux sorties, sans fusion forcée des datasets ou modification des 
+sujets imposés.
+3. Définitions mathématiques et causalité
+Rendement journalier — r(t) = ln[P(t) / P(t−1)], où P(t) provient d’une série ajustée de façon cohérente. Les 
+conventions d’ajustement doivent être fixées et tracées.
+Cible volatilité — Proposition H = 5 séances : y(t) = √252 × écart-type(r(t+1), …, r(t+H)). H est à figer avant 
+expérimentation ; si l’enseignant précise un autre horizon, il prévaut. Ne pas utiliser les rendements de la cible 
+dans les features au temps t.
+Baselines — Volatilité historique sur fenêtres terminant à t (5, 10, 20 jours), persistance du niveau volatilité et 
+éventuellement EWMA. Tous les prédicteurs restent causaux.
+Protocole — Découpage par dates ; purge aux frontières des échantillons dont l’étiquette se projette dans le 
+bloc suivant ; scaler ajusté sur train seulement ; optimisation sur validation seulement ; test 15 % gelé.
+Régimes — Variables explicatives : tendance passée, volatilité glissante, drawdown historique. Étiquettes 
+issues d’un clustering entraîné sur le seul train et d’un mapping post hoc documenté. Sans labels indépendants, 
+pas de « taux d’accuracy réel des régimes ».
+POINT DE VIGILANCE  Pour l’examen, garder exactement les modèles imposés par chaque sujet. Des baselines supplémentaires ou 
+comparaisons scientifiques sont des compléments, pas des remplacements.
+4. Fonctionnalités et composants
+M1 — Collecte et traçabilité
+•  Téléchargement de SPY et ^IXIC depuis Yahoo Finance, contrôle des dates, colonnes, doublons et trous de 
+cotation.
+•  Sauvegarde du brut et de versions nettoyées en CSV/Parquet ; provenance, horodatage et hash.
+•  Rapport EDA : prix, rendements, volatilité, épisodes extrêmes, distributions et autocorrélations.
+M2 — Feature engineering et préparation
+•  Rendements logarithmiques, volatilité historique, momentum/trend, amplitude journalière et drawdown au 
+temps t.
+•  Fenêtres glissantes [t−L+1, …, t], cible future et split purgé ; vérifications automatiques anti-look-ahead.
+•  Standardisation/normalisation fit sur train ; jeux de séquences documentés par date d’entrée et date de cible.
+M3 — Prévision de volatilité SPY
+•  Modèles PyTorch : LSTM et CNN 1D avec capacité comparable, sortie de volatilité strictement positive.
+•  Boucle d’entraînement, early stopping sur validation, tests par seeds, calibration et rapport des erreurs.
+•  Comparaison RMSE, MAE et erreurs par sous-période face aux baselines, sans optimiser sur le test final.
+
+CAHIER DES CHARGES  /  PROJET C
+Projet C  •  Cadrage version 1.1  |  Page 3
+M4 — Régimes NASDAQ
+•  Autoencodeur entraîné uniquement sur observations d’apprentissage ; clustering dans un espace latent.
+•  Profiling des régimes selon tendance/volatilité/drawdown ; suivi de transition temporelle et stabilité statistique.
+•  LSTM de classification sur cible pseudo-étiquetée documentée ; rapports de confusion vis-à-vis de cette 
+pseudo-cible uniquement.
+M5 — Dashboard scientifique
+•  Graphes temporels prédiction versus réalisé et erreurs, boxplots par période, traces de version de modèle.
+•  Frise des états de marché estimés, profils des clusters et matrice de transition.
+•  Avertissements sur incertitude, surapprentissage, caractère non prospectif de l’historique et absence de 
+conseil de trading.
+5. Architecture et technologies
+Yahoo Finance (source imposée) → Python/Pandas → Parquet local → pipelines sklearn de préparation → 
+PyTorch LSTM/CNN 1D et autoencodeur/clustering → journaux MLflow et résultats versionnés → API FastAPI et 
+dashboard Plotly/Streamlit. Pas de nécessité Kafka/Spark pour un historique journalier de cet ordre de 
+grandeur ; cloud seulement comme démonstration optionnelle.
+Composant
+Technologies
+Justification
+ETL
+Python, Pandas, NumPy, PyArrow
+Données historisées et cohérentes.
+Deep Learning
+PyTorch, LSTM, CNN 1D, 
+autoencodeur
+Architectures imposées par sujets 3 et 4.
+Baselines
+Scikit-learn, EWMA/règles simples
+Comparer à des méthodes pertinentes.
+Régimes
+K-Means/GMM sur latent, Scikit-learn
+État statistique sans vérité terrain.
+MLOps
+MLflow, pytest, seeds, Git
+Auditabilité et reproductibilité.
+Restitution
+Plotly, Streamlit, FastAPI, Docker
+Démonstrateur scientifique.
+6. Protocole de recherche et interprétation
+1.  Préenregistrer cibles, horizons, fenêtres d’entrée, métriques et split avant d’ajuster des modèles.
+2.  Fixer un jeu naïf de référence et établir les performances par période sur la validation.
+3.  Comparer LSTM et CNN 1D à complexité comparable, budget de tuning identique, réplications par seeds et 
+journaux complets.
+4.  Étudier les erreurs conditionnellement à la volatilité historique ; aucune conclusion d’avantage économique 
+sans étude dédiée.
+5.  Réaliser l’analyse de régimes séparément et vérifier sensibilité au choix K, aux features et au bootstrap.
+6.  Verrouiller la configuration finale, faire une unique évaluation sur le test, puis documenter tout résultat 
+décevant sans ré-optimisation.
+7. KPIs et seuils des trois paliers
+L1 = prototype scientifique conforme au sujet attribué ; L2 = expérience rigoureuse et reproductible ; L3 = 
+démonstrateur scientifique mature. Les objectifs de skill prédictif sont aspiratoires : l’absence de gain sur une 
+baseline peut être une conclusion scientifique valide. Les KPI de non-fuite et de traçabilité sont obligatoires.
+KPI et preuve
+L1 MVP
+L2 stable
+L3 mature
+Conformité source, tickers et fenêtre chronologique
+100 %
+100 %
+100 %
+Respect du split 70/15/15, sans chevauchement futur
+100 %
+100 % + purge
+100 % + audit
+
+CAHIER DES CHARGES  /  PROJET C
+Projet C  •  Cadrage version 1.1  |  Page 4
+KPI et preuve
+L1 MVP
+L2 stable
+L3 mature
+Tests automatiques anti-leakage réussis
+≥ 10
+≥ 25
+≥ 40
+Modèles imposés entraînés/évalués par sujet
+2 / 2
+2 / 2
+2 / 2
+Baselines causales comparaison volatilité
+≥ 1
+≥ 3
+≥ 4
+Gain RMSE vs meilleure baseline (objectif, non gate)
+Mesuré
+≥ 2 %
+≥ 5 %
+Gain MAE vs meilleure baseline (objectif, non gate)
+Mesuré
+≥ 1 %
+≥ 3 %
+Sessions de validation walk-forward dans train+val
+≥ 1
+≥ 3
+≥ 5
+Variabilité RMSE inter-seeds / RMSE moyenne
+Mesurée
+≤ 3 %
+≤ 2 %
+Prédictions de volatilité négatives ou non finies
+0
+0
+0
+Traçabilité modèle/seed/split/données par expérience
+≥ 90 %
+100 %
+100 %
+Couverture descriptive des profils régime et transitions
+≥ 2 états
+≥ 3 états / prudent
+Tous états + CI
+ARI stabilité des étiquettes de régimes (objectif)
+Mesuré
+≥ 0,50
+≥ 0,65
+Concordance LSTM pseudo-labels (ne vaut pas vérité)
+Mesurée
+F1 macro + 
+baseline
+F1 + IC et biais
+Réutilisation du test final pour tuning
+0
+0
+0 + audit
+Rejeu du training : écart relatif métrique principale
+≤ 5 %
+≤ 2 %
+≤ 1 %
+Graphiques/analyses interprétatives documentés
+≥ 5
+≥ 8
+≥ 10
+Tests critiques du pipeline et modèles réussis
+≥ 90 %
+≥ 98 %
+100 %
+7.1 KPIs Data Engineering et qualité du pipeline temporel
+À cette fréquence, un ETL versionné et causal est préférable à l’ajout de Kafka/Spark sans besoin de volume 
+réel.
+KPI données / mesure
+L1 — MVP
+L2 — stable
+L3 — mature
+Provenance vérifiée des prix Yahoo Finance 2015–2024 et 
+empreinte figée
+100 % source/période
+100 % + hash
+100 % + manifest
+Contrats de schéma OHLCV/Adj Close : scénarios de validation 
+réussis
+100 % / 10 cas
+100 % / 30 cas
+100 % / 60 cas
+Découpage 70/15/15 temporel, sans chevauchement des 
+étiquettes futures
+100 % / 10 tests
+100 % / 25 tests
+100 % / 50 tests
+Lignes manquantes/ajustées : traitement documenté avec 
+provenance
+≥ 95 %
+100 %
+100 % + audit
+Durée ETL + features sur snapshot figé, hors téléchargement
+≤ 120 s
+≤ 60 s
+≤ 30 s
+Expériences avec version dataset/split/seed/modèle et 
+horodatage
+≥ 90 %
+100 %
+100 %
+7.2 KPIs de déploiement du démonstrateur PyTorch (facultatif)
+Critères pour une API locale conteneurisée. Aucun hébergement cloud n’est présumé requis par le sujet 
+Timeseries.
+
+CAHIER DES CHARGES  /  PROJET C
+Projet C  •  Cadrage version 1.1  |  Page 5
+KPI déploiement / mesure
+L1 — MVP
+L2 — stable
+L3 — mature
+Image Docker du démonstrateur construite depuis un tag Git 
+propre
+1 / 1 succès
+3 / 3 succès
+5 / 5 succès
+Temps de redéploiement de l’application locale, artefacts déjà 
+disponibles
+≤ 20 min
+≤ 10 min
+≤ 5 min
+Réponses 2xx aux tests de santé pendant session de 
+démonstration active
+≥ 95 % / 15 min
+≥ 99 % / 30 min
+≥ 99,5 % / 60 min
+API P95 d’une prévision, concurrence fixée sur machine de 
+référence
+≤ 3 s / 1
+≤ 2 s / 5
+≤ 1,5 s / 10
+Parité prédiction notebook / API sur données de test figées
+≤ 1e-5 / 20 cas
+≤ 1e-5 / 100 cas
+≤ 1e-5 / 300 cas
+API : erreurs explicites sur entrées hors schéma, inf/non fini
+100 % / 10
+100 % / 30
+100 % / 60
+RTO après arrêt de l’application / redémarrage du conteneur
+≤ 15 min
+≤ 10 min
+≤ 5 min
+Logs avec timestamp, version modèle et durée de prédiction
+≥ 90 %
+≥ 99 %
+100 %
+Reproductibilité du build : dépendances et environnement 
+spécifiés
+requirements figés
+lock + image tag
+hash + procédure 
+auditée
+Protocole de mesure et décisions de recette
+•  C traite des séries quotidiennes sur 2015-2024 : l'ajout de Kafka/Spark n'est pas justifié par le besoin 
+académique et n'est pas une condition de réussite. Les KPIs mesurent ici la qualité du pipeline batch et de la 
+restitution du DL.
+•  La démonstration Docker/FastAPI est facultative par rapport à l'examen scientifique ; les KPIs de déploiement 
+deviennent obligatoires seulement si le projet est présenté comme une application déployée sur le CV. Les 
+résultats scientifiques restent prioritaires.
+•  RTO, disponibilité et P95 concernent une session de démo locale mesurée, pas un service web permanent. 
+Si un cloud est choisi ultérieurement, définir séparément IAM, restauration, coût, permissions et disponibilité 
+cloud.
+•  La conformité à Yahoo Finance, au sujet effectivement attribué, aux architectures LSTM/CNN 1D ou 
+autoencodeur/LSTM, ainsi que l'absence de fuite temporelle demeurent des conditions de recette bloquantes.
+Mesures et seuils : définitions
+•  Gain RMSE = 100 × (RMSE_baseline − RMSE_modèle)/RMSE_baseline ; un gain négatif indique une 
+dégradation.
+•  La meilleure baseline est choisie sans regarder le test ; si le DL ne l’améliore pas, annoncer le résultat tel 
+quel.
+•  ARI mesure la concordance de partition entre deux entraînements sur un même jeu de référence ; un bon 
+ARI ne prouve pas une interprétation économique correcte.
+•  Réplications par seeds sur la même fenêtre ; même budget de recherche et même convention de volatilité.
+•  Une version « 100 % stable » n’existe pas ; L3 signifie traçabilité, robustesse expérimentale et confiance 
+dans la conclusion, non prédiction parfaite.
+8. Tests de recette scientifiques
+•  Test non-régression des features : aucune donnée timestamp > t n’alimente l’entrée du modèle au temps t.
+•  Tests de découpage et de purge pour toutes les fenêtres dont la cible déborde d’une frontière temporelle.
+•  Test des prix ajustés, conventions de rendement et cas de séries constantes / manquantes.
+•  Tests de reproductibilité des seeds CPU, de sauvegarde et chargement de modèles, de l’inférence.
+
+CAHIER DES CHARGES  /  PROJET C
+Projet C  •  Cadrage version 1.1  |  Page 6
+•  Contrôle des ordres de grandeur de volatilité, des métriques RMSE/MAE et des graphiques réel versus 
+prédit.
+•  Pour les régimes, vérifier qu’aucun état n’est artificiellement décrit comme « observé » et que l’étiquette est 
+attribuable uniquement à la méthode déclarée.
+9. Livrables par niveau
+Palier
+Livrables
+L1
+Notebook données, protocole figé, split, baseline, 2 modèles sujet attribué, rapport initial et graphiques.
+L2
+Seeds multiples, validation walk-forward, tuning borné, stabilité des régimes si sujet 4, dashboard, 
+MLflow et conclusions négatives incluses.
+L3
+Reproduction intégrale depuis un script, tests CI, model cards, rapport scientifique critique, 
+démonstration Docker et validation des invariants.
+10. Risques et exclusions
+Risque
+Protection
+Historique trop court pour réseaux 
+complexes
+Architecture simple, régularisation, baselines et ablations.
+Fuite de la cible future
+Fenêtres causales, purge et tests datés.
+Performance optimisée sur test
+Test scellé, pré-enregistrement, rapport honnête.
+Régime auto-validé par sa pseudo-
+étiquette
+Interprétation statistique limitée, stabilité et profils.
+Mélange SPY / NASDAQ non prévu
+Branches séparées ; combinaison dashboard uniquement.
+Non-conformité sujet enseignant
+Priorité absolue au sujet effectivement attribué.
+11. Critère final de réussite et CV
+Le projet est réussi lorsque la question scientifique a reçu une réponse reproductible, avec modèles imposés 
+comparés à des baselines, absence de fuite temporelle, analyse d’incertitude et limites explicites. La maturité 
+technique ne requiert pas une performance positive « forcée ». Pour le CV : « Projet académique Deep Learning 
+— prévision de volatilité avec LSTM/CNN 1D (PyTorch) » ; ajouter « régimes de marché » seulement si 
+l’extension a réellement été implémentée.
+12. Références et hypothèses
+•  EXAMEN — Timeseries (document fourni) : sujets 3/4, sources, 2015–2024, modèles imposés et découpage 
+70/15/15.
+•  Horizon de volatilité H=5 proposé ici à figer par validation académique ; il n’est pas spécifié numériquement 
+dans l’énoncé.
+•  Documentation PyTorch : https://pytorch.org/docs/stable/index.html
+•  Données Yahoo Finance : source imposée par l’examen ; vérifier accessibilité et droits d’utilisation.

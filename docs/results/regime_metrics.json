@@ -1,0 +1,115 @@
+{
+  "source": "Yahoo Finance",
+  "label_semantics": "train-only latent cluster pseudo-labels; not economic truth",
+  "profiles": [
+    {
+      "cluster": 0,
+      "return": 0.003476417662783067,
+      "vol5": 0.12151128341518598,
+      "vol10": 0.1314633072422108,
+      "vol20": 0.14153199160371,
+      "momentum": 0.033116095808960765,
+      "range": 0.009135264581504729,
+      "drawdown": -0.020103217085249078,
+      "volume_change": -0.0066243190942682165
+    },
+    {
+      "cluster": 1,
+      "return": -0.007904062408583289,
+      "vol5": 0.2402192503795154,
+      "vol10": 0.23655785384103617,
+      "vol20": 0.225777241362454,
+      "momentum": -0.02919443113787821,
+      "range": 0.019980602395370896,
+      "drawdown": -0.07654071895171231,
+      "volume_change": 0.02584084964762959
+    },
+    {
+      "cluster": 2,
+      "return": 0.0046485414433245975,
+      "vol5": 0.792785762735122,
+      "vol10": 0.7823104676503276,
+      "vol20": 0.7595560287037995,
+      "momentum": -0.1323706814541067,
+      "range": 0.04456333545819629,
+      "drawdown": -0.21630251036176154,
+      "volume_change": -0.0635361524640417
+    }
+  ],
+  "stability_ari": 0.2989871440417585,
+  "stability_scope": "KMeans bootstrap in fixed train-fitted autoencoder latent space; not full network stability",
+  "pseudo_label_report": {
+    "0": {
+      "precision": 0.9833333333333333,
+      "recall": 0.979253112033195,
+      "f1-score": 0.9812889812889813,
+      "support": 241.0
+    },
+    "1": {
+      "precision": 0.9618320610687023,
+      "recall": 0.9692307692307692,
+      "f1-score": 0.9655172413793104,
+      "support": 130.0
+    },
+    "accuracy": 0.9757412398921833,
+    "macro avg": {
+      "precision": 0.9725826972010179,
+      "recall": 0.9742419406319821,
+      "f1-score": 0.9734031113341459,
+      "support": 371.0
+    },
+    "weighted avg": {
+      "precision": 0.9757991948039478,
+      "recall": 0.9757412398921833,
+      "f1-score": 0.9757624956063473,
+      "support": 371.0
+    }
+  },
+  "confusion": [
+    [
+      236,
+      5,
+      0
+    ],
+    [
+      4,
+      126,
+      0
+    ],
+    [
+      0,
+      0,
+      0
+    ]
+  ],
+  "transitions": [
+    [
+      0.8816101026045777,
+      0.11838989739542226,
+      0.0
+    ],
+    [
+      0.34813084112149534,
+      0.6378504672897196,
+      0.014018691588785047
+    ],
+    [
+      0.034482758620689655,
+      0.1724137931034483,
+      0.7931034482758621
+    ]
+  ],
+  "seed": 42,
+  "features": [
+    "return",
+    "vol5",
+    "vol10",
+    "vol20",
+    "momentum",
+    "range",
+    "drawdown",
+    "volume_change"
+  ],
+  "dataset_sha256": "ddcff88cfa6b8959f06a17101be5c63503569f94bc1fcde728d3ad4bd674efcd",
+  "evaluation_split": "test"
+}

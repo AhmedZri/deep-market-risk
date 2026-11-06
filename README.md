@@ -1,6 +1,6 @@
 # Deep Financial Market Risk Intelligence
 
-Projet académique personnel ENSI : prévision de volatilité sur **SPY** avec **PyTorch LSTM / CNN 1D**, et analyse séparée des régimes statistiques du **NASDAQ Composite** avec autoencodeur, K-Means et LSTM.
+Projet académique personnel : prévision de volatilité sur **SPY** avec **PyTorch LSTM / CNN 1D**, et analyse séparée des régimes statistiques du **NASDAQ Composite** avec autoencodeur, K-Means et LSTM.
 
 Le projet comprend la collecte Yahoo Finance, les contrôles de qualité, les fenêtres causales, les splits temporels purgés, l'entraînement reproductible, les baselines, les artefacts, une API FastAPI et un dashboard Streamlit. Aucun abonnement, GPU ou déploiement cloud n'est nécessaire.
 

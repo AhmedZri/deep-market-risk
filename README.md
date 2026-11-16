@@ -1,10 +1,12 @@
 # Deep Financial Market Risk Intelligence
 
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue) ![PyTorch](https://img.shields.io/badge/PyTorch-CPU-ee4c2c) ![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen) ![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)
+
 Projet académique personnel : prévision de volatilité sur **SPY** avec **PyTorch LSTM / CNN 1D**, et analyse séparée des régimes statistiques du **NASDAQ Composite** avec autoencodeur, K-Means et LSTM.
 
 Le projet comprend la collecte Yahoo Finance, les contrôles de qualité, les fenêtres causales, les splits temporels purgés, l'entraînement reproductible, les baselines, les artefacts, une API FastAPI et un dashboard Streamlit. Aucun abonnement, GPU ou déploiement cloud n'est nécessaire.
 
-> L’archive livrée contient déjà les artefacts entraînés de référence : vous pouvez lancer l’interface directement. Les commandes de training ci-dessous servent notamment après un clone Git sans artefacts. Conservez les scellés du test final ; ne les supprimez pas pour ajuster les modèles.
+> Après un clone Git, les prix Yahoo et les modèles entraînés ne sont pas inclus (voir `.gitignore`) : les commandes ci-dessous les téléchargent et réentraînent les modèles. Conservez les scellés du test final ; ne les supprimez pas pour ajuster les modèles.
 
 ## Démarrage
 
